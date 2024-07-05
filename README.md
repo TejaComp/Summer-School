@@ -8,7 +8,7 @@ Welcome to the Summer-School project repository! This project aims to ...
 To get started with the Summer-School project, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/TejaComp/Summer-School.git`
-2. Install dependencies: `npm install`
+2. Install dependencies: 
 3. ...
 
 ## Usage
