@@ -21,61 +21,61 @@ static FILE* global_output;
 
 static FILE* start_gnuplot() {
 
-FILE* output;
+    FILE* output;
 
-int pipes[2];
+    int pipes[2];
 
-pid_t pid;
-
-
-pipe(pipes);
-
-pid = fork();
+    pid_t pid;
 
 
-if (!pid) {
+    pipe(pipes);
 
-dup2(pipes[0], STDIN_FILENO);
-
-execlp("gnuplot", "gnuplot", NULL);
-
-return NULL; // Not reached
-
-}
+    pid = fork();
 
 
-output = fdopen(pipes[1], "w");
+    if (!pid) {
+
+    dup2(pipes[0], STDIN_FILENO);
+
+    execlp("gnuplot", "gnuplot", NULL);
+
+    return NULL; // Not reached
+
+    }
 
 
-fprintf(output, "set multiplot\n");
-
-fprintf(output, "set parametric\n");
-
-fprintf(output, "set xrange [-%d:%d]\n", WIDTH, WIDTH);
-
-fprintf(output, "set yrange [-%d:%d]\n", HEIGHT, HEIGHT);
-
-fprintf(output, "set size ratio -1\n");
-
-fprintf(output, "unset xtics\n");
-
-fprintf(output, "unset ytics\n");
-
-fflush(output);
+    output = fdopen(pipes[1], "w");
 
 
-return output;
+    fprintf(output, "set multiplot\n");
 
-}
+    fprintf(output, "set parametric\n");
+
+    fprintf(output, "set xrange [-%d:%d]\n", WIDTH, WIDTH);
+
+    fprintf(output, "set yrange [-%d:%d]\n", HEIGHT, HEIGHT);
+
+    fprintf(output, "set size ratio -1\n");
+
+    fprintf(output, "unset xtics\n");
+
+    fprintf(output, "unset ytics\n");
+
+    fflush(output);
 
 
-static void draw_line(FILE* output, double x1, double y1, double x2, double y2) {
+    return output;
 
-fprintf(output, "plot [0:1] %f + %f * t, %f + %f * t notitle\n", x1, x2 - x1, y1, y2 - y1);
+    }
 
-fflush(output);
 
-}
+    static void draw_line(FILE* output, double x1, double y1, double x2, double y2) {
+
+    fprintf(output, "plot [0:1] %f + %f * t, %f + %f * t notitle\n", x1, x2 - x1, y1, y2 - y1);
+
+    fflush(output);
+
+    }
 
 
 static double x, y;
@@ -87,30 +87,30 @@ static int pendown;
 
 static SCM tortoise_reset() {
 
-x = y = 0.0;
+    x = y = 0.0;
 
-direction = 0.0;
+    direction = 0.0;
 
-pendown = 1;
-
-
-fprintf(global_output, "clear\n");
-
-fflush(global_output);
+    pendown = 1;
 
 
-return SCM_UNSPECIFIED;
+    fprintf(global_output, "clear\n");
+
+    fflush(global_output);
+
+
+    return SCM_UNSPECIFIED;
 
 }
 
 
 static SCM tortoise_pendown() {
 
-SCM result = scm_from_bool(pendown);
+    SCM result = scm_from_bool(pendown);
 
-pendown = 1;
+    pendown = 1;
 
-return result;
+    return result;
 
 }
 
